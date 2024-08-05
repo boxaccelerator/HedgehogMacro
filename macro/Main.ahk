@@ -24,7 +24,7 @@ CoordMode, Mouse, Screen
 #Include *i jxon.ahk
 
 global macroName := "Hedgehog Macro"
-global macroVersion := "v0.5.6"
+global macroVersion := "v0.6.0"
 
 if (RegExMatch(A_ScriptDir,"\.zip") || IsFunc("ocr") = 0) {
     ; File is not extracted or not saved with other necessary files
@@ -373,7 +373,7 @@ updateStaticData(){
 
     FileRead, staticDataContent, % "staticData.json"
     sData := Jxon_Load(staticDataContent)[1]
-    if (sData.updateInfo.latestVersion != "v0.5.6"){
+    if (sData.updateInfo.latestVersion != macroVersion){
         uNotes := sData.updateInfo.updateNotes
         MsgBox, 4, % "New Update Available", % "A new update is available! Would you like to head to the GitHub page to update your macro? We'll open the page for you, you'll need to run HMInstaller." . (uNotes ? ("`n`nUpdate Notes:`n" . uNotes) : "")
         
@@ -2947,7 +2947,6 @@ CreateMainUI() {
     Gui Add, Text, x115 y95 w124 h40,"A self-learner developer, and a pro gamer."
     Gui Font, s8 norm
     Gui Add, Text, x28 y145 w200 h32 BackgroundTrans,% "Make sure to check out the updates and check for bugs!"
-    Gui Add, Button, x28 y177 w206 h32 gMoreCreditsClick,% "More Credits"
 
     Gui Font, s10 w600
     Gui Add, GroupBox, x252 y40 w231 h90 vCreditsGroup2 -Theme +0x50000007, The Inspiration
