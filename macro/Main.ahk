@@ -30,7 +30,6 @@ if (RegExMatch(A_ScriptDir,"\.zip") || IsFunc("ocr") = 0) {
     ; File is not extracted or not saved with other necessary files
     MsgBox, 16, % macroName " " macroVersion, % "Unable to access all necessary files to run correctly.`n"
             . "Please make sure the macro folder is extracted by right clicking the downloaded file and choosing 'Extract All'.`n`n"
-            . "Note that Amraki's Patch only contains modified files. They will need to be copied into the official macro folder."
     ExitApp
 }
 
