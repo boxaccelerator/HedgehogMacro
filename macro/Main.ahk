@@ -358,7 +358,7 @@ writeToINI(path,object,header){
 }
 
 updateStaticData(){
-    url := "https://raw.githubusercontent.com/boxaccelerator/HedgehogMacro/lib/staticData.json"
+    url := "https://raw.githubusercontent.com/boxaccelerator/HedgehogMacro/macro/lib/staticData.json"
 
     WinHttp := ComObjCreate("WinHttp.WinHttpRequest.5.1")
     WinHttp.Open("GET", url, false)
