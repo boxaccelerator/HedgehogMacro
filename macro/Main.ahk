@@ -35,7 +35,7 @@ if (RegExMatch(A_ScriptDir,"\.zip") || IsFunc("ocr") = 0) {
 
 Gdip_Startup()
 
-; Run macro as admin to avoid issues with Roblox input
+; Run macro as admin to avoid issues with Roblox input -- not intended for any bad purposes
 full_command_line := DllCall("GetCommandLine", "str")
 if not (A_IsAdmin or RegExMatch(full_command_line, " /restart(?!\S)")) {
     try {
@@ -375,7 +375,7 @@ updateStaticData(){
     sData := Jxon_Load(staticDataContent)[1]
     if (sData.updateInfo.latestVersion != "v0.5.6"){
         uNotes := sData.updateInfo.updateNotes
-        MsgBox, 4, % "New Update Available", % "A new update is available! Would you like to head to the GitHub page to update your macro?" . (uNotes ? ("`n`nUpdate Notes:`n" . uNotes) : "")
+        MsgBox, 4, % "New Update Available", % "A new update is available! Would you like to head to the GitHub page to update your macro? We'll open the page for you, you'll need to run HMInstaller." . (uNotes ? ("`n`nUpdate Notes:`n" . uNotes) : "")
         
         IfMsgBox Yes
             updateYesClicked()
