@@ -24,7 +24,7 @@ CoordMode, Mouse, Screen
 #Include *i jxon.ahk
 
 global macroName := "Hedgehog Macro"
-global macroVersion := "v0.6.0"
+global macroVersion := "v0.7.0"
 
 if (RegExMatch(A_ScriptDir,"\.zip") || IsFunc("ocr") = 0) {
     ; File is not extracted or not saved with other necessary files
@@ -2870,39 +2870,37 @@ CreateMainUI() {
     Gui Font, s8 norm
     Gui Add, Text, vStatsDisplay x22 y58 w118 h146, runtime: 0`ndisconnects: 0
 
-;    Gui Font, s10 w600
-;    Gui Add, GroupBox, x151 y40 w200 h170 vWebhookGroup -Theme +0x50000007, Discord Webhook
-;    Gui Font, s7.5 norm
-;    Gui Add, CheckBox, vWebhookCheckBox x166 y63 w120 h16 +0x2 gEnableWebhookToggle, % " Enable Webhook"
-;    Gui Add, Text, x161 y85 w100 h20 vWebhookInputHeader BackgroundTrans, Webhook URL:
-;    Gui Add, Edit, x166 y103 w169 h18 vWebhookInput,% ""
-;    Gui Add, Button, gWebhookHelpClick vWebhookHelpButton x325 y50 w23 h23, ?
-;    Gui Add, CheckBox, vWebhookImportantOnlyCheckBox x166 y126 w140 h16 +0x2, % " Important events only"
-;    Gui Add, Text, vWebhookUserIDHeader x161 y145 w150 h14 BackgroundTrans, % "Discord User ID (Pings):"
-;    Gui Add, Edit, x166 y162 w169 h16 vWebhookUserIDInput,% ""
-;    Gui Font, s7.4 norm
-;    Gui Add, CheckBox, vWebhookInventoryScreenshots x161 y182 w130 h26 +0x2, % "Inventory Screenshots (mins)"
-;    Gui Add, Edit, x294 y186 w50 h18
-;    Gui Add, UpDown, vInvScreenshotinterval Range1-1440
+    Gui Font, s10 w600;    Gui Add, GroupBox, x151 y40 w200 h170 vWebhookGroup -Theme +0x50000007, Discord Webhook
+    Gui Font, s7.5 norm
+    Gui Add, CheckBox, vWebhookCheckBox x166 y63 w120 h16 +0x2 gEnableWebhookToggle, % " Enable Webhook"
+    Gui Add, Text, x161 y85 w100 h20 vWebhookInputHeader BackgroundTrans, Webhook URL:
+    Gui Add, Edit, x166 y103 w169 h18 vWebhookInput,% ""
+    Gui Add, Button, gWebhookHelpClick vWebhookHelpButton x325 y50 w23 h23, ?
+    Gui Add, CheckBox, vWebhookImportantOnlyCheckBox x166 y126 w140 h16 +0x2, % " Important events only"
+    Gui Add, Text, vWebhookUserIDHeader x161 y145 w150 h14 BackgroundTrans, % "Discord User ID (Pings):"
+    Gui Add, Edit, x166 y162 w169 h16 vWebhookUserIDInput,% ""
+    Gui Font, s7.4 norm
+    Gui Add, CheckBox, vWebhookInventoryScreenshots x161 y182 w130 h26 +0x2, % "Inventory Screenshots (mins)"
+    Gui Add, Edit, x294 y186 w50 h18
+    Gui Add, UpDown, vInvScreenshotinterval Range1-1440
 
-;    Gui Font, s10 w600
-;    Gui Add, GroupBox, x356 y40 w127 h50 vStatusOtherGroup -Theme +0x50000007, Other
-;    Gui Font, s9 norm
-;    Gui Add, CheckBox, vStatusBarCheckBox x366 y63 w110 h20 +0x2, % " Enable Status Bar"
+    Gui Font, s10 w600
+    Gui Add, GroupBox, x356 y40 w127 h50 vStatusOtherGroup -Theme +0x50000007, Other
+    Gui Font, s9 norm
+    Gui Add, CheckBox, vStatusBarCheckBox x366 y63 w110 h20 +0x2, % " Enable Status Bar"
 
-;    Gui Font, s9 w600
-;    Gui Add, GroupBox, x356 y90 w127 h120 vRollDetectionGroup -Theme +0x50000007, Roll Detection
-;    Gui Font, s8 norm
-;    Gui Add, Button, gRollDetectionHelpClick vRollDetectionHelpButton x457 y99 w23 h23, ?
-;    Gui Add, Text, vWebhookRollSendHeader x365 y110 w110 h16 BackgroundTrans, % "Send Minimum:"
-;    Gui Add, Edit, vWebhookRollSendInput x370 y126 w102 h18, 10000
-;    Gui Add, Text, vWebhookRollPingHeader x365 y146 w110 h16 BackgroundTrans, % "Ping Minimum:"
-;    Gui Add, Edit, vWebhookRollPingInput x370 y162 w102 h18, 100000
-;    Gui Add, CheckBox, vWebhookRollImageCheckBox gWebhookRollImageCheckBoxClick x365 y183 w90 h18, Aura Images
-;    Gui Add, Picture, gShowAuraSettings vShowAuraSettingsIcon x458 y183 w20 h20, % mainDir "images\settingsIcon.png"
-
+    Gui Font, s9 w600
+    Gui Add, GroupBox, x356 y90 w127 h120 vRollDetectionGroup -Theme +0x50000007, Roll Detection
+    Gui Font, s8 norm
+    Gui Add, Button, gRollDetectionHelpClick vRollDetectionHelpButton x457 y99 w23 h23, ?
+    Gui Add, Text, vWebhookRollSendHeader x365 y110 w110 h16 BackgroundTrans, % "Send Minimum:"
+    Gui Add, Edit, vWebhookRollSendInput x370 y126 w102 h18, 10000
+    Gui Add, Text, vWebhookRollPingHeader x365 y146 w110 h16 BackgroundTrans, % "Ping Minimum:"
+    Gui Add, Edit, vWebhookRollPingInput x370 y162 w102 h18, 100000
+    Gui Add, CheckBox, vWebhookRollImageCheckBox gWebhookRollImageCheckBoxClick x365 y183 w90 h18, Aura Images
+    Gui Add, Picture, gShowAuraSettings vShowAuraSettingsIcon x458 y183 w20 h20, % mainDir "images\settingsIcon.png"
     ; Assign the g-label to the icon/button to show the Aura settings popup
-;    GuiControl, +gShowAuraSettings, vShowAuraSettingsIcon
+    GuiControl, +gShowAuraSettings, vShowAuraSettingsIcon
 
 ; settings tab
     Gui Tab, 3
