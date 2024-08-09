@@ -1,9 +1,9 @@
 [{
-    "announcement":"Hedgehog Macro v0.9.0 has fully released! Remember to have your camera mode on Default (Classic) before starting the macro.",
+    "announcement":"Hedgehog Macro v0.9.1 has fully released! Remember to have your camera mode on Default (Classic) before starting the macro.",
     "updateInfo": {
-        "latestVersion":"v0.9.0",
+        "latestVersion":"v0.9.1",
         "versionLink":"https://github.com/boxaccelerator/HedgehogMacro/releases/tag/v0.9.0-3",
-        "updateNotes":"v0.9.0 has fully released!"
+        "updateNotes":"v0.9.1 has fully released!"
     },
     "stars": {
         "12505855": {
