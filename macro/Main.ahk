@@ -29,7 +29,7 @@ CoordMode, Mouse, Screen
 #Include *i ItemScheduler.ahk
 
 global macroName := "Hedgehog Macro"
-global macroVersion := "v0.8.1"
+global macroVersion := "v0.9.0"
 
 if (RegExMatch(A_ScriptDir,"\.zip") || IsFunc("ocr") = 0) {
     ; File is not extracted or not saved with other necessary files
