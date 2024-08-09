@@ -5,7 +5,7 @@ A lightweight yet powerful macro for the Roblox game "Sol's RNG".
  - Firstly, you'll need to download [AutoHotKey](https://www.autohotkey.com/) v1.1 (not 2.0!), and run the installer.
  - Once complete, download the most recent version of Hedgehog Macro through the most recent [GitHub Release](https://github.com/boxaccelerator/HedgehogMacro/releases/latest) (Download HMInstaller.exe)
  - After downloading, run the installer.
- - Go to Installed Folder/Hedgehog Macro v0.8.0
+ - Go to the Installed Folder.
  - You can now run the macro through the run.exe file in the folder
 
 ## Features
