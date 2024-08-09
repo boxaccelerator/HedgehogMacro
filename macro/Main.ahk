@@ -2327,6 +2327,12 @@ ReceiveFromStatus(wParam, lParam) {
 
     currentBiome := ReceivedData
     logMessage("New Biome: " currentBiome)
+    if (!currentBiome == "Rainy" || !currentBiome == "Corruption" || !currentBiome == "Starfall" || !currentBiome == "Glitched") {
+        useItem("Strange Controller", 1)
+        if (!currentBiome == "Rainy" || !currentBiome == "Corruption" || !currentBiome == "Starfall" || !currentBiome == "Glitched") {
+            useItem("Biome Randomizer", 1)
+        }
+    }
 }
 
 LogError(exc) {
