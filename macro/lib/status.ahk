@@ -2,6 +2,10 @@
 #noenv
 #persistent
 
+
+global loggingEnabled := 0 ; disabled for public release, set to 1 to enable
+
+
 OnError("LogError")
 OnExit, ShowCursor
 
@@ -17,7 +21,6 @@ Gdip_Startup()
 
 global mainDir
 RegExMatch(A_ScriptDir, "(.*)\\", mainDir)
-global loggingEnabled := 1
 global lastLoggedMessage := ""
 
 global configPath := mainDir . "settings\config.ini"
@@ -45,7 +48,7 @@ global biomeData := {"Normal":{color: 0xdddddd}
 ,"Windy":{color: 0x9ae5ff, duration: 120, display: 0, ping: 0}
 ,"Rainy":{color: 0x027cbd, duration: 120, display: 0, ping: 0}
 ,"Snowy":{color: 0xDceff9, duration: 120, display: 0, ping: 0}
-,"Hell":{color: 0xff4719, duration: 660, display: 0, ping: 0}
+,"Hell":{color: 0xff4719, duration: 660, display: 1, ping: 0}
 ,"Starfall":{color: 0x011ab7, duration: 600, display: 0, ping: 0}
 ,"Corruption":{color: 0x6d32a8, duration: 660, display: 0, ping: 0}
 ,"Null":{color: 0x838383, duration: 90, display: 0, ping: 0}
@@ -68,19 +71,19 @@ if (!ErrorLevel){
     RegExMatch(retrieved, "(?<=WebhookRollPingMinimum=)(.*)", pingMinimum)
     RegExMatch(retrieved, "(?<=WebhookAuraRollImages=)(.*)", auraImages)
 } else {
-    MsgBox, An error occurred while reading %configPath% data, Discord messages will not be sent.
+    logMessage("An error occurred while reading config data. Discord messages will not be sent.")
     return
 }
 
 FileRead, staticDataContent, % "staticData.json"
 global staticData := Jxon_Load(staticDataContent)[1]
 
-; Added in v1.4.0 - Does this improve anything?
-; for i,v in staticData.stars {
-;     if (v.rarity < 1000000 && !v.mutations){
-;         v.cornerColor := 0
-;     }
-; }
+; for defaulting <1m auras to have a black corner
+for i,v in staticData.stars {
+    if (v.rarity < 1000000 && !v.mutations){
+        v.cornerColor := 0
+    }
+}
 
 LogError(exc) {
     logMessage("[LogError] Error on line " exc.Line ": " exc.Message)
@@ -248,21 +251,21 @@ getINIData(path){
     readingPoint := 0
 
     ls := StrSplit(retrieved,"`n")
-    for i,v in ls {
-        ; Remove any carriage return characters
-        v := Trim(v, "`r")
+        for i,v in ls {
+            ; Remove any carriage return characters
+            v := Trim(v, "`r")
 
-        isHeader := RegExMatch(v,"\[(.*)]")
-        if (v && readingPoint && !isHeader){
-            RegExMatch(v,"(.*)(?==)",index)
-            RegExMatch(v,"(?<==)(.*)",value)
-            if (index){
-                retrievedData[index] := value
+            isHeader := RegExMatch(v,"\[(.*)]")
+            if (v && readingPoint && !isHeader){
+                RegExMatch(v,"(.*)(?==)",index)
+                RegExMatch(v,"(?<==)(.*)",value)
+                if (index){
+                    retrievedData[index] := value
+                }
+            } else if (isHeader){
+                readingPoint := 1
             }
-        } else if (isHeader){
-            readingPoint := 1
         }
-    }
     return retrievedData
 }
 
@@ -358,8 +361,8 @@ Class CreateFormData {
                 For i, FileName in v
                 {
                     str := BoundaryLine . CRLF
-                        . "Content-Disposition: form-data; name=""" . k . """; filename=""" . FileName . """" . CRLF
-                        . "Content-Type: " . this.MimeType(FileName) . CRLF . CRLF
+                    . "Content-Disposition: form-data; name=""" . k . """; filename=""" . FileName . """" . CRLF
+                    . "Content-Type: " . this.MimeType(FileName) . CRLF . CRLF
 
                     this.StrPutUTF8( str )
                     this.LoadFromFile( Filename )
@@ -368,8 +371,8 @@ Class CreateFormData {
                 }
             } Else {
                 str := BoundaryLine . CRLF
-                    . "Content-Disposition: form-data; name=""" . k """" . CRLF . CRLF
-                    . v . CRLF
+                . "Content-Disposition: form-data; name=""" . k """" . CRLF . CRLF
+                . v . CRLF
                 this.StrPutUTF8( str )
             }
         }
@@ -553,6 +556,7 @@ identifyBiome(inputStr){
         }
     }
 
+
     return matchingBiome
 }
 
@@ -592,8 +596,9 @@ determineBiome(){
         }
     }
     if (identifiedBiome && identifiedBiome != "Normal") {
-        logMessage("[determineBiome] OCR result: " RegExReplace(ocrResult,"(\n|\r)+",""))
-        logMessage("[determineBiome] Identified biome: " identifiedBiome)
+        ; logMessage("[determineBiome] OCR result: " RegExReplace(ocrResult,"(\n|\r)+",""))
+        ; logMessage("[determineBiome] Identified biome: " identifiedBiome)
+        Gdip_SaveBitmapToFile(pBM,ssPath)
     }
 
     Gdip_DisposeEffect(effect)
@@ -849,58 +854,49 @@ SystemCursor(OnOff=1)   ; INIT = "I","Init"; OFF = 0,"Off"; TOGGLE = -1,"T","Tog
     }
 }
 
-; SendBiomeData(ByRef biome){
-;     ; Allocate memory and store the string
-;     SizeInBytes := (StrLen(biome) + 1) * (A_IsUnicode ? 2 : 1)
-;     hMem := DllCall("GlobalAlloc", "UInt", 0x0042, "UInt", SizeInBytes, "Ptr")
-;     pMem := DllCall("GlobalLock", "Ptr", hMem, "Ptr")
-;     if (pMem) {
-;         StrPut(biome, pMem, "UTF-8")
-;         DllCall("GlobalUnlock", "Ptr", hMem)
-        
-;         ; Send data to Main.ahk
-;         SetTitleMatchMode, 2
-;         DetectHiddenWindows, On
-;         if hwnd := WinExist("Hedgehog Macro ahk_class AutoHotkeyGUI") {
-;             PostMessage, 0x500, 0, hMem,, ahk_id %hwnd%
-;             logMessage("[SendBiomeData] Sent to Main.ahk: " currentBiome)
-;         } else {
-;             DllCall("GlobalFree", "Ptr", hMem)
-;         }
-;     }
-; }
+SendToMain(ByRef StringToSend) {
+    TargetScript := "ahk_class AutoHotkeyGUI"
 
-secondTick(){
-    biomeFinished := 0
-    if (currentBiome != "Normal" && currentBiomeTimer - getUnixTime() < 1){
-        biomeFinished := 1
-    }
+    VarSetCapacity(CopyDataStruct, 3*A_PtrSize, 0)
+    SizeInBytes := (StrLen(StringToSend) + 1) * (A_IsUnicode ? 2 : 1)
+    NumPut(SizeInBytes, CopyDataStruct, A_PtrSize)
+    NumPut(&StringToSend, CopyDataStruct, 2*A_PtrSize)
+
+    Prev_DetectHiddenWindows := A_DetectHiddenWindows
+    Prev_TitleMatchMode := A_TitleMatchMode
+    DetectHiddenWindows On
+    SetTitleMatchMode 2
+
+    SendMessage, 0x4a, 0, &CopyDataStruct,, %TargetScript%
+
+    DetectHiddenWindows %Prev_DetectHiddenWindows%
+    SetTitleMatchMode %Prev_TitleMatchMode%
+    return ErrorLevel
+}
+
+secondTick() {
     rollDetection()
 
-    if ((!rareDisplaying && currentBiome = "Normal") || biomeFinished){
-        FormatTime, fTime, , HH:mm:ss
-        if (biomeFinished && currentBiomeDisplayed){
-            currentBiomeDisplayed := 0
-            webhookPost({embedContent: "[" fTime "]: Rare Biome Ended - " currentBiome})
-            currentBiome := "Normal"
-        }
+    detectedBiome := determineBiome()
+    if (!detectedBiome || detectedBiome == currentBiome) {
+        return
+    }
 
-        detectedBiome := determineBiome()
+    if (detectedBiome == "Normal") {
+        logMessage("[secondTick] Biome Ended: " currentBiome)
+        currentBiome := detectedBiome
+        SendToMain(currentBiome)
+    } else {
+        currentBiome := detectedBiome
+        logMessage("[secondTick] Detected biome: " currentBiome)
+        SendToMain(currentBiome)
 
-        if (detectedBiome && biomeData[detectedBiome] && detectedBiome != "Normal"){
-            currentBiome := detectedBiome
-            logMessage("[secondTick] Detected biome: " currentBiome)
-            ; Send to Main.ahk
-            ; SendBiomeData(currentBiome)
 
-            targetData := biomeData[currentBiome]
-            if (targetData.display || targetData.ping){
-                currentBiomeDisplayed := 1
+        targetData := biomeData[currentBiome]
+        if (targetData.display || targetData.ping) {
+            FormatTime, fTime, , HH:mm:ss
 
-                webhookPost({embedContent: "[" fTime "]: Rare Biome Started - " currentBiome, embedColor: targetData.color, pings: targetData.ping, biome: currentBiome})
-            }
-
-            currentBiomeTimer := getUnixTime() + targetData.duration + 5
+            webhookPost({embedContent: "[" fTime "]: Biome Started - " currentBiome, files:[ssPath], embedImage:"attachment://ss.jpg", embedColor: targetData.color, pings: targetData.ping, biome: currentBiome})
         }
     }
 }
@@ -920,7 +916,7 @@ logMessage(message, indent := 0) {
         return
     }
     
-    logFile := mainDir . "\macro_status_log.txt"
+    logFile := mainDir . "\lib\macro_status_log.txt"
     
     ; Check the log file size and truncate if necessary
     if (FileExist(logFile) && FileGetSize(logFile) > maxLogSize) {
