@@ -29,7 +29,7 @@ CoordMode, Mouse, Screen
 #Include *i ItemScheduler.ahk
 
 global macroName := "Hedgehog Macro"
-global macroVersion := "v0.8.1"
+global macroVersion := "v0.9.1"
 
 if (RegExMatch(A_ScriptDir,"\.zip") || IsFunc("ocr") = 0) {
     ; File is not extracted or not saved with other necessary files
@@ -2755,16 +2755,16 @@ CreateMainUI() {
     ; main tab
     Gui Tab, 1
 
-;    Gui Font, s10
-;    Gui Add, GroupBox, x16 y40 w231 h70 vObbyOptionGroup -Theme +0x50000007, Obby
-;    Gui Font, s9, Segoe UI
-;    Gui Add, CheckBox, vObbyCheckBox x32 y59 w180 h26 +0x2, % " Do Obby (Every 2 Mins)"
-;    Gui Add, CheckBox, vObbyBuffCheckBox x32 y80 w200 h26 +0x2, % " Check for Obby Buff Effect"
-;    Gui Add, Button, gObbyHelpClick vObbyHelpButton x221 y50 w23 h23, ?
+    Gui Font, s10
+    Gui Add, GroupBox, x16 y40 w231 h70 vObbyOptionGroup -Theme +0x50000007, Obby
+    Gui Font, s9, Segoe UI
+    Gui Add, CheckBox, vObbyCheckBox x32 y59 w180 h26 +0x2, % " Do Obby (Every 2 Mins)"
+    Gui Add, CheckBox, vObbyBuffCheckBox x32 y80 w200 h26 +0x2, % " Check for Obby Buff Effect"
+    Gui Add, Button, gObbyHelpClick vObbyHelpButton x221 y50 w23 h23, ?
 
-    Gui Font, s10 w600
+    Gui Font, s10
     Gui Add, GroupBox, x252 y40 w231 h70 vAutoEquipGroup -Theme +0x50000007, Auto Equip
-    Gui Font, s9 norm
+    Gui Font, s9, Segoe UI
     Gui Add, CheckBox, vAutoEquipCheckBox x268 y61 w190 h22 +0x2, % " Enable Auto Equip"
     Gui Add, Button, +gShowAuraEquipSearch x268 y83 w115 h22, Configure Search
     Gui Add, Button, gAutoEquipHelpClick vAutoEquipHelpButton x457 y50 w23 h23, ?
@@ -2895,11 +2895,11 @@ CreateMainUI() {
 
     ; Roblox UI style to determine Chat button position
     Gui Font, s10
-    Gui Add, Text, x400 y150, Roblox UI
+    Gui Add, Text, x400 y130, Roblox UI
     Gui Font, s9, Segoe UI
     
     ; options["RobloxUpdatedUI"]
-    Gui Add, Radio, AltSubmit gGetRobloxVersion vRobloxUpdatedUIRadio1 x420 y170, Old
+    Gui Add, Radio, AltSubmit gGetRobloxVersion vRobloxUpdatedUIRadio1 x420 y150, Old
     Gui Add, Radio, AltSubmit gGetRobloxVersion vRobloxUpdatedUIRadio2, New
     GuiControl,, RobloxUpdatedUIRadio1, % (options["RobloxUpdatedUI"] = 1) ? 1 : 0
     GuiControl,, RobloxUpdatedUIRadio2, % (options["RobloxUpdatedUI"] = 2) ? 1 : 0
@@ -2908,7 +2908,7 @@ CreateMainUI() {
 
     ; status bar
     Gui statusBar:New, +AlwaysOnTop -Border -Caption -MaximizeBox -MinimizeBox -Resize -Theme
-    Gui Font, s15, Segoe UI
+    Gui Font, s11, Segoe UI
     Gui Add, Text, x0 y0 w250 h35 vStatusBarText, Status: Loading...
 
     Gui mainUI:Default

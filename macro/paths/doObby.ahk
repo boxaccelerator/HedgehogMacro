@@ -1,6 +1,5 @@
 ;    HM Obby Completion Feature
-;    Coming in 1.0.0 or later
-;    Leaking this file is not allowed
+;    Coming in v1.0.0 or later
 
 #singleinstance, force
 #noenv
@@ -22,7 +21,7 @@ walkSend("d","Down")
 ;first jump
 jump()
 
-if (options.VIP){
+if (options.VIP) {
     walkSleep(500)
     walkSend("d","Up")
     walkSleep(200)

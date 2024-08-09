@@ -5,26 +5,23 @@ CoordMode, Pixel, Screen
 CoordMode, Mouse, Screen
 #Include ..\lib\pathReference.ahk
 
-; patch by Amraki
-; revision by sanji (sir.moxxi) and Flash (drflash55). Also unofficially by Xilenti (xianleigh) and Lizz (lizz44fu)
-
 walkSend("s","Down")
+walkSleep(1000)
 walkSend("a","Down")
 walkSleep(1300)
 walkSend("a","Up")
-walkSleep(2150)
+walkSleep(1150)
 walkSend("s","Up")
 collect(1)
 
 walkSend("d","Down")
 walkSleep(1000)
-press("s",200)
+press("s", 200)
 walkSleep(2200)
 walkSend("d","Up")
 collect(2)
 
-if (options.Shifter){
-
+if (options.Shifter) {
     walkSend("a","Down")
     walkSend("w","Down")
     walkSleep(200)
@@ -66,7 +63,6 @@ if (options.Shifter){
 
     walkSend("a","Down")
     walkSleep(1222)
-    ; :)
     jump()
     walkSleep(2125)
     jump()
@@ -106,7 +102,7 @@ if (options.Shifter){
     sleep, 100
     collect(7)
 
-} else if (options.VIP){
+} else if (options.VIP) {
 
     walkSend("a","Down")
     walkSend("w","Down")
@@ -146,7 +142,6 @@ if (options.Shifter){
 
     walkSend("a","Down")
     walkSleep(777)
-    ; :)
     jump()
     walkSend("w","Down")
     walkSleep(350)
@@ -187,7 +182,7 @@ if (options.Shifter){
     walkSleep(200)
     walkSend("s","Up")
     walkSend("d","Down")
-    walksleep(100)
+    walkSleep(100)
     walkSend("d","Up")
     sleep, 100
     collect(7)
@@ -244,7 +239,6 @@ if (options.Shifter){
 
     walkSend("a","Down")
     walkSleep(777)
-    ; :)
     jump()
     walkSend("w","Down")
     walkSleep(350)
